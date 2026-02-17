@@ -60,5 +60,6 @@ Registro da limpeza do log de auditoria, frequentemente usada por invasores para
 ---
 
 ## 12 – Dump de Credenciais (LSASS)
-![12-deteccao-dump-credenciais](prints/12-detec)
+![12-dump-credenciais](prints/12-dump-credenciais.png)
+
 
