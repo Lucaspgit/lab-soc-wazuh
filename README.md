@@ -38,12 +38,37 @@ systemctl status wazuh-indexer
 systemctl status wazuh-dashboard
 ```
 
-### Evidências
+---
 
-![Manager Running](prints/manager-running.png)  
-![Indexer Running](prints/indexer-running.png)  
-![Dashboard Running](prints/dashboard-running.png)  
-![Dashboard Ativo](prints/01-prints-dashboard-ativo.png)
+## 🖥️ Manager Running
+
+<p align="center">
+  <img src="prints/manager-running.png" width="800">
+</p>
+
+---
+
+## 🗂️ Indexer Running
+
+<p align="center">
+  <img src="prints/indexer-running.png" width="800">
+</p>
+
+---
+
+## 📊 Dashboard Running
+
+<p align="center">
+  <img src="prints/dashboard-running.png" width="800">
+</p>
+
+---
+
+## 📈 Dashboard Ativo
+
+<p align="center">
+  <img src="prints/01-prints-dashboard-ativo.png" width="800">
+</p>
 
 ---
 
@@ -55,11 +80,11 @@ systemctl status wazuh-dashboard
 
 **Event ID:** 4625  
 
-### Descrição
-Múltiplas tentativas de autenticação falhas detectadas contra conta local.
+### 📸 Evidência Visual
 
-### Evidência Visual
-![4625 Logon Failure](prints/07-deteccao-tentativa-logon-falha-4625.png)
+<p align="center">
+  <img src="prints/07-deteccao-tentativa-logon-falha-4625.png" width="800">
+</p>
 
 ### Classificação MITRE ATT&CK
 
@@ -71,8 +96,11 @@ Múltiplas tentativas de autenticação falhas detectadas contra conta local.
 
 ## 2️⃣ SSH Brute Force – Linux
 
-### Evidência Visual
-![SSH Evento](prints/15-evento-5007.png)
+### 📸 Evidência Visual
+
+<p align="center">
+  <img src="prints/15-evento-5007.png" width="800">
+</p>
 
 ### Classificação MITRE ATT&CK
 
@@ -86,7 +114,9 @@ Múltiplas tentativas de autenticação falhas detectadas contra conta local.
 
 **Event ID:** 4720  
 
-![Criação de Conta 4720](prints/05-deteccao-criacao-conta-local.png)
+<p align="center">
+  <img src="prints/05-deteccao-criacao-conta-local.png" width="800">
+</p>
 
 ### Classificação MITRE ATT&CK
 
@@ -100,7 +130,9 @@ Múltiplas tentativas de autenticação falhas detectadas contra conta local.
 
 **Event ID:** 4738  
 
-![Modificação de Conta](prints/06-deteccao-criacao-processo-4688.png)
+<p align="center">
+  <img src="prints/06-deteccao-criacao-processo-4688.png" width="800">
+</p>
 
 ### Classificação MITRE ATT&CK
 
@@ -113,7 +145,9 @@ Múltiplas tentativas de autenticação falhas detectadas contra conta local.
 
 **Event ID:** 4688  
 
-![Processo 4688](prints/06-deteccao-criacao-processo-4688.png)
+<p align="center">
+  <img src="prints/06-deteccao-criacao-processo-4688.png" width="800">
+</p>
 
 ### Classificação MITRE ATT&CK
 
@@ -124,7 +158,9 @@ Múltiplas tentativas de autenticação falhas detectadas contra conta local.
 
 ## 6️⃣ File Integrity Monitoring (FIM)
 
-![FIM Checksum Changed](prints/04-fim-integrity-checksum-changed.png)
+<p align="center">
+  <img src="prints/04-fim-integrity-checksum-changed.png" width="800">
+</p>
 
 ### Classificação MITRE ATT&CK
 
@@ -137,7 +173,9 @@ Múltiplas tentativas de autenticação falhas detectadas contra conta local.
 
 **Event ID:** 7045  
 
-![Serviço 7045](prints/09-deteccao-criacao-servico-7045.png)
+<p align="center">
+  <img src="prints/09-deteccao-criacao-servico-7045.png" width="800">
+</p>
 
 ### Classificação MITRE ATT&CK
 
@@ -151,7 +189,9 @@ Múltiplas tentativas de autenticação falhas detectadas contra conta local.
 
 **Event ID:** 1102  
 
-![Limpeza de Logs](prints/11-deteccao-limpeza-logs-1102.png)
+<p align="center">
+  <img src="prints/11-deteccao-limpeza-logs-1102.png" width="800">
+</p>
 
 ### Classificação MITRE ATT&CK
 
