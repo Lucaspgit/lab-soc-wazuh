@@ -4,7 +4,7 @@ Projeto prático de laboratório SOC utilizando **Wazuh v4.14.3 OVA**, simulando
 
 ---
 
-## 📌 Objetivo
+# 📌 Objetivo
 
 Demonstrar habilidades práticas de:
 
@@ -17,7 +17,7 @@ Demonstrar habilidades práticas de:
 
 ---
 
-## 🏗️ Arquitetura do Laboratório
+# 🏗️ Arquitetura do Laboratório
 
 - **SIEM:** Wazuh 4.14.3 (Manager + Indexer + Dashboard)
 - **Servidor:** Wazuh OVA
@@ -25,6 +25,25 @@ Demonstrar habilidades práticas de:
   - Windows (com Sysmon)
   - Linux (SSH)
 - **Virtualização:** VirtualBox
+
+---
+
+# 📊 Validação do Ambiente
+
+## 🔹 Serviços Wazuh em Execução
+
+```bash
+systemctl status wazuh-manager
+systemctl status wazuh-indexer
+systemctl status wazuh-dashboard
+```
+
+### Evidências
+
+![Manager Running](prints/manager-running.png)
+![Indexer Running](prints/indexer-running.png)
+![Dashboard Running](prints/dashboard-runinng.png)
+![Dashboard Ativo](prints/01-prints-dashboard-ativo.png)
 
 ---
 
@@ -39,58 +58,41 @@ Demonstrar habilidades práticas de:
 ### Descrição
 Múltiplas tentativas de autenticação falhas detectadas contra conta local.
 
-### Evidências do Log
-- LogonType: 3
-- Status: 0xC000006D
-- SubStatus: 0xC000006A
+### Evidência Visual
+![4625 Logon Failure](prints/07-deteccao-tentativa-logon-falha-2-4625.png)
 
-### Classificação
+### Classificação MITRE ATT&CK
+
 - **Tática:** Credential Access  
-- **MITRE ATT&CK:** T1110 – Brute Force  
-
-### Resposta
-- Verificação do IP de origem  
-- Bloqueio via firewall  
-- Monitoramento contínuo da conta afetada  
+- **Técnica:** T1110 – Brute Force  
+- **Subtécnica:** T1110.001 – Password Guessing  
 
 ---
 
 ## 2️⃣ SSH Brute Force – Linux
 
-### Descrição
-Múltiplas tentativas de login via SSH utilizando credenciais inválidas.
+### Evidência Visual
+![SSH Evento](prints/15-evento-5007.png)
 
-### Evidência
+### Classificação MITRE ATT&CK
 
-Failed password for invalid user
-
-
-### Classificação
 - **Tática:** Credential Access  
-- **MITRE ATT&CK:** T1110 – Brute Force  
-
-### Resposta
-- Identificação do IP atacante  
-- Implementação de fail2ban  
-- Recomendação de autenticação via chave SSH  
+- **Técnica:** T1110 – Brute Force  
+- **Subtécnica:** T1110.001 – Password Guessing  
 
 ---
 
-## 3️⃣ Criação de Conta Local (Persistence)
+## 3️⃣ Criação de Conta Local
 
 **Event ID:** 4720  
 
-### Descrição
-Nova conta criada no sistema operacional.
+![Criação de Conta 4720](prints/05-deteccao-criacao-conta-local.png)
 
-### Classificação
+### Classificação MITRE ATT&CK
+
 - **Tática:** Persistence  
-- **MITRE ATT&CK:** T1136 – Create Account  
-
-### Resposta
-- Validação com administrador  
-- Auditoria da conta criada  
-- Revisão de privilégios  
+- **Técnica:** T1136 – Create Account  
+- **Subtécnica:** T1136.001 – Local Account  
 
 ---
 
@@ -98,54 +100,50 @@ Nova conta criada no sistema operacional.
 
 **Event ID:** 4738  
 
-### Descrição
-Conta existente sofreu alteração de atributos.
+![Modificação de Conta](prints/06-deteccao-criacao-processo-4688.png)
 
-### Classificação
+### Classificação MITRE ATT&CK
+
 - **Tática:** Persistence  
-- **MITRE ATT&CK:** T1098 – Account Manipulation  
+- **Técnica:** T1098 – Account Manipulation  
 
 ---
 
-## 5️⃣ Execução de Processo Suspeito
+## 5️⃣ Execução de Processo
 
 **Event ID:** 4688  
 
-### Descrição
-Criação de novo processo detectada via log de segurança.
+![Processo 4688](prints/06-deteccao-criacao-processo-4688.png)
 
-### Monitoramento Analisado
-- Parent process  
-- Command line  
-- Contexto do usuário  
+### Classificação MITRE ATT&CK
 
-### Classificação
 - **Tática:** Execution  
-- **MITRE ATT&CK:** T1059 – Command and Scripting Interpreter  
+- **Técnica:** T1059 – Command and Scripting Interpreter  
 
 ---
 
 ## 6️⃣ File Integrity Monitoring (FIM)
 
-### Descrição
-Alteração detectada em arquivo monitorado pelo módulo de integridade do Wazuh.
+![FIM Checksum Changed](prints/04-fim-integrity-checksum-changed.png)
 
-### Classificação
-- **Tática:** Defense Evasion  
-- **MITRE ATT&CK:** T1070 – Indicator Removal  
+### Classificação MITRE ATT&CK
+
+- **Tática:** Impact  
+- **Técnica:** T1565 – Data Manipulation  
 
 ---
 
-## 7️⃣ Criação de Serviço no Windows
+## 7️⃣ Criação de Serviço
 
 **Event ID:** 7045  
 
-### Descrição
-Novo serviço instalado no sistema.
+![Serviço 7045](prints/09-deteccao-criacao-servico-7045.png)
 
-### Classificação
+### Classificação MITRE ATT&CK
+
 - **Tática:** Persistence  
-- **MITRE ATT&CK:** T1543 – Create or Modify System Process  
+- **Técnica:** T1543 – Create or Modify System Process  
+- **Subtécnica:** T1543.003 – Windows Service  
 
 ---
 
@@ -153,39 +151,33 @@ Novo serviço instalado no sistema.
 
 **Event ID:** 1102  
 
-### Descrição
-Log de segurança do Windows foi apagado.
+![Limpeza de Logs](prints/11-deteccao-limpeza-logs-1102.png)
 
-### Classificação
+### Classificação MITRE ATT&CK
+
 - **Tática:** Defense Evasion  
-- **MITRE ATT&CK:** T1070 – Clear Windows Event Logs  
+- **Técnica:** T1070 – Indicator Removal  
+- **Subtécnica:** T1070.001 – Clear Windows Event Logs  
 
 ---
 
-# 📊 Monitoramento com Wazuh
+# 📘 Lições Aprendidas
 
-Validação dos serviços:
-
-```bash
-systemctl status wazuh-manager
-systemctl status wazuh-indexer
-systemctl status wazuh-dashboard
-
-
-Todos operando corretamente no ambiente do laboratório.
+- Importância do monitoramento de eventos críticos como 1102 (log clearing)
+- Correlação entre eventos 4625 + 4688 aumenta precisão da detecção
+- Hardening em SSH reduz superfície de ataque
+- Monitoramento contínuo de criação e modificação de contas administrativas
+- FIM é essencial para detectar manipulação de dados
 
 ---
 
-# 🧠 Mapeamento MITRE ATT&CK Utilizado
+# 🚀 Melhorias Futuras
 
-| Técnica | Descrição |
-|----------|------------|
-| T1110 | Brute Force |
-| T1136 | Create Account |
-| T1098 | Account Manipulation |
-| T1059 | Command Execution |
-| T1543 | Create Service |
-| T1070 | Log Clearing / Defense Evasion |
+- Integração com SOAR (Shuffle ou n8n)
+- Alertas automatizados por e-mail
+- Integração com VirusTotal API
+- Criação de playbooks automatizados
+- Implementação de Active Response no Wazuh
 
 ---
 
@@ -193,4 +185,4 @@ Todos operando corretamente no ambiente do laboratório.
 
 **Lucas**  
 Estudante de Segurança da Informação  
-Foco em SOC Analyst / Blue Team  
+Foco em SOC Analyst / Blue Team
