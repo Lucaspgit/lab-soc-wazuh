@@ -1,146 +1,196 @@
-# Lab SOC Wazuh
+# 🛡️ Wazuh SOC Lab – Threat Detection & Incident Response
 
-Este repositório documenta a configuração e detecção de eventos de segurança em um laboratório SOC com Wazuh.  
-Os tópicos estão organizados por etapas de detecção de ataques e monitoramento do ambiente Windows.
-
----
-
-## 01 – Agente Ativo
-![dashboard ativo](prints/01-prints-dashboard-ativo.png)  
-Verificação do status do agente Wazuh conectado ao manager.
+Projeto prático de laboratório SOC utilizando **Wazuh v4.14.3 OVA**, simulando ataques reais em ambiente controlado para detecção, análise e resposta a incidentes de segurança.
 
 ---
 
-## 02 – Dashboard em execução
-![dashboard Wazuh](prints/dashboard-running.png)  
-O painel do Wazuh está funcionando corretamente, mostrando alertas e eventos do agente.
+## 📌 Objetivo
+
+Demonstrar habilidades práticas de:
+
+- Monitoramento com SIEM
+- Análise de logs Windows e Linux
+- Investigação de incidentes
+- Mapeamento MITRE ATT&CK
+- Resposta a incidentes
+- Documentação técnica de eventos de segurança
 
 ---
 
-## 03 – Indexer em execução
-![indexer Wazuh](prints/indexer-running.png)  
-Confirmação de que o serviço de indexação do Wazuh está ativo, permitindo a ingestão dos logs.
+## 🏗️ Arquitetura do Laboratório
+
+- **SIEM:** Wazuh 4.14.3 (Manager + Indexer + Dashboard)
+- **Servidor:** Wazuh OVA
+- **Endpoints monitorados:**
+  - Windows (com Sysmon)
+  - Linux (SSH)
+- **Virtualização:** VirtualBox
 
 ---
 
-## 04 – Integridade de arquivos (Checksum Alterado)
-![integridade de arquivos](prints/04-fim-integrity-checksum-changed.png)  
-Detecção de alteração em arquivos monitorados pelo File Integrity Monitoring (FIM), indicando possível modificação não autorizada.
+# 🔎 Incidentes Simulados e Detectados
 
 ---
 
-## 05 – Criação de Conta Local
-![criação de conta](prints/05-deteccao-criacao-conta-local.png)  
-O Wazuh detectou a criação de uma conta local no Windows. Monitoramento importante para identificar ações de invasores que criam contas com privilégios.
+## 1️⃣ Brute Force Attack – Windows Logon Failure
+
+**Event ID:** 4625  
+
+### Descrição
+Múltiplas tentativas de autenticação falhas detectadas contra conta local.
+
+### Evidências do Log
+- LogonType: 3
+- Status: 0xC000006D
+- SubStatus: 0xC000006A
+
+### Classificação
+- **Tática:** Credential Access  
+- **MITRE ATT&CK:** T1110 – Brute Force  
+
+### Resposta
+- Verificação do IP de origem  
+- Bloqueio via firewall  
+- Monitoramento contínuo da conta afetada  
 
 ---
 
-## 06 – Criação de Processo (Event ID 4688)
-![criação de processo](prints/06-deteccao-criacao-processo-4688.png)  
-Registro da criação de novos processos no sistema. Permite rastrear programas suspeitos que podem executar malware ou dump de credenciais.
+## 2️⃣ SSH Brute Force – Linux
+
+### Descrição
+Múltiplas tentativas de login via SSH utilizando credenciais inválidas.
+
+### Evidência
+
+Failed password for invalid user
+
+
+### Classificação
+- **Tática:** Credential Access  
+- **MITRE ATT&CK:** T1110 – Brute Force  
+
+### Resposta
+- Identificação do IP atacante  
+- Implementação de fail2ban  
+- Recomendação de autenticação via chave SSH  
 
 ---
 
-## 07 – Tentativa de Logon Falha (Event ID 4625)
-![tentativa de logon falha](prints/07-deteccao-tentativa-logon-falha-4625.png)  
-Monitoramento de tentativas de login falhas, útil para identificar ataques de força bruta via SSH ou outros serviços remotos.
+## 3️⃣ Criação de Conta Local (Persistence)
+
+**Event ID:** 4720  
+
+### Descrição
+Nova conta criada no sistema operacional.
+
+### Classificação
+- **Tática:** Persistence  
+- **MITRE ATT&CK:** T1136 – Create Account  
+
+### Resposta
+- Validação com administrador  
+- Auditoria da conta criada  
+- Revisão de privilégios  
 
 ---
 
-## 09 – Criação de Serviço (Event ID 7045)
-![criação de serviço](prints/09-deteccao-criacao-servico-7045.png)  
-Detecta a criação de novos serviços, o que pode indicar persistência de malware no sistema.
+## 4️⃣ Modificação de Conta
+
+**Event ID:** 4738  
+
+### Descrição
+Conta existente sofreu alteração de atributos.
+
+### Classificação
+- **Tática:** Persistence  
+- **MITRE ATT&CK:** T1098 – Account Manipulation  
 
 ---
 
-## 11 – Limpeza de Logs (Event ID 1102)
-![limpeza de logs](prints/11-deteccao-limpeza-logs-1102.png)  
-Registro da limpeza do log de auditoria, frequentemente usada por invasores para ocultar rastros de atividades maliciosas.
+## 5️⃣ Execução de Processo Suspeito
+
+**Event ID:** 4688  
+
+### Descrição
+Criação de novo processo detectada via log de segurança.
+
+### Monitoramento Analisado
+- Parent process  
+- Command line  
+- Contexto do usuário  
+
+### Classificação
+- **Tática:** Execution  
+- **MITRE ATT&CK:** T1059 – Command and Scripting Interpreter  
 
 ---
 
-## 12 – Dump de Credenciais (LSASS)
-![dump de credenciais](prints/12-dump-credenciais.png)  
-Detecção de dump de credenciais da memória do sistema, indicado por acessos suspeitos ao processo LSASS.
+## 6️⃣ File Integrity Monitoring (FIM)
+
+### Descrição
+Alteração detectada em arquivo monitorado pelo módulo de integridade do Wazuh.
+
+### Classificação
+- **Tática:** Defense Evasion  
+- **MITRE ATT&CK:** T1070 – Indicator Removal  
 
 ---
 
-## 13 – Tentativa de Login SSH
-![tentativa SSH](prints/13-tentativa-ssh.png)  
-Registro de tentativas de login falhas via SSH, simulando um ataque de força bruta a partir de uma máquina Linux.
+## 7️⃣ Criação de Serviço no Windows
+
+**Event ID:** 7045  
+
+### Descrição
+Novo serviço instalado no sistema.
+
+### Classificação
+- **Tática:** Persistence  
+- **MITRE ATT&CK:** T1543 – Create or Modify System Process  
 
 ---
 
-## 14 – Movimento Lateral
-![movimento lateral](prints/14-deteccao-lateral-movement.png)  
-Monitoramento de ações que indicam movimentação lateral dentro da rede, como acesso remoto ou execução de scripts em máquinas distintas.
+## 8️⃣ Limpeza de Logs
+
+**Event ID:** 1102  
+
+### Descrição
+Log de segurança do Windows foi apagado.
+
+### Classificação
+- **Tática:** Defense Evasion  
+- **MITRE ATT&CK:** T1070 – Clear Windows Event Logs  
 
 ---
 
-## 15 – Windows Defender Alterado (Event ID 5007)
-![evento 5007](prints/15-evento-5007.png)  
-Detecção de alteração na configuração do Microsoft Defender Antivírus.  
-Exemplo de mensagem do evento:
-"A Configuração do Microsoft Defender Antivírus foi alterada. Se este é um evento inesperado, convém verificar as configurações, pois isso pode ser o resultado de um malware.
-Valor antigo: HKLM\SOFTWARE\Microsoft\Windows Defender\CoreService\WdConfigHash = 0x5AAFB843
-Novo valor: HKLM\SOFTWARE\Microsoft\Windows Defender\CoreService\WdConfigHash = 0xE01C0682"
+# 📊 Monitoramento com Wazuh
+
+Validação dos serviços:
+
+```bash
+systemctl status wazuh-manager
+systemctl status wazuh-indexer
+systemctl status wazuh-dashboard
 
 
+Todos operando corretamente no ambiente do laboratório.
 
 ---
 
-# Arquivo de configuração Wazuh
+# 🧠 Mapeamento MITRE ATT&CK Utilizado
 
-O arquivo de configuração do agente (`ossec.conf`) está incluído para referência e deve ser usado para monitorar eventos do Windows, Sysmon, Defender e logs de segurança:
+| Técnica | Descrição |
+|----------|------------|
+| T1110 | Brute Force |
+| T1136 | Create Account |
+| T1098 | Account Manipulation |
+| T1059 | Command Execution |
+| T1543 | Create Service |
+| T1070 | Log Clearing / Defense Evasion |
 
-```xml
-<ossec_config>
-  <client>
-    <server>
-      <address>192.168.1.13</address>
-      <port>1514</port>
-      <protocol>tcp</protocol>
-    </server>
-  </client>
+---
 
-  <localfile>
-    <log_format>eventlog</log_format>
-    <location>Security</location>
-  </localfile>
+# 👨‍💻 Autor
 
-  <localfile>
-    <log_format>eventlog</log_format>
-    <location>System</location>
-  </localfile>
-
-  <localfile>
-    <log_format>eventlog</log_format>
-    <location>Application</location>
-  </localfile>
-
-  <localfile>
-    <log_format>eventchannel</log_format>
-    <location>Microsoft-Windows-Sysmon/Operational</location>
-  </localfile>
-
-  <localfile>
-    <log_format>eventchannel</log_format>
-    <location>Microsoft-Windows-Windows Defender/Operational</location>
-  </localfile>
-
-  <remote>
-    <connection>secure</connection>
-    <frequency>300</frequency>
-  </remote>
-
-  <directories check_all="yes">C:\Users</directories>
-  <directories check_all="no">C:\Windows\System32\drivers\etc</directories>
-
-  <alerts>
-    <email>yes</email>
-    <log>yes</log>
-    <level>12h</level>
-  </alerts>
-</ossec_config>
-
-
+**Lucas**  
+Estudante de Segurança da Informação  
+Foco em SOC Analyst / Blue Team  
