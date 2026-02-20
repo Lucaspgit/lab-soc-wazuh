@@ -40,9 +40,9 @@ systemctl status wazuh-dashboard
 
 ### Evidências
 
-![Manager Running](prints/manager-running.png)
-![Indexer Running](prints/indexer-running.png)
-![Dashboard Running](prints/dashboard-runinng.png)
+![Manager Running](prints/manager-running.png)  
+![Indexer Running](prints/indexer-running.png)  
+![Dashboard Running](prints/dashboard-running.png)  
 ![Dashboard Ativo](prints/01-prints-dashboard-ativo.png)
 
 ---
@@ -59,7 +59,7 @@ systemctl status wazuh-dashboard
 Múltiplas tentativas de autenticação falhas detectadas contra conta local.
 
 ### Evidência Visual
-![4625 Logon Failure](prints/07-deteccao-tentativa-logon-falha-2-4625.png)
+![4625 Logon Failure](prints/07-deteccao-tentativa-logon-falha-4625.png)
 
 ### Classificação MITRE ATT&CK
 
